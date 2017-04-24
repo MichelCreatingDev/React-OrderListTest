@@ -1,5 +1,16 @@
-.duck {
+.logo {
   display: block;
-  width: 120px;
-  margin: 1.5rem auto;
+  width: 50%;
+  margin: 5rem auto;
+}
+.group{
+  border-radius: 0;
+}
+.group-item span {
+  line-height: 7rem;
+  font-size: 1.6rem;
+  color: #bbbbc1;
+  border-radius: 0;
+  border: 0 0 1px 0;
+  border-radius: 0;
 }
