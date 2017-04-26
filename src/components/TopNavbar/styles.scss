@@ -1,0 +1,17 @@
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 14px;
+  line-height: 50px;
+  font-weight: bold;
+  background-color: #1a1a1f;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+  height: 50px;
+}
+.nav-bar div a{
+  color: white;
+}

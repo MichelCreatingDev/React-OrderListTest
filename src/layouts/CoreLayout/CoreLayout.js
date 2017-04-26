@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import TopNavbar from '../../containers/topnavbar/Topnavbar'
-import BottomNavbar from '../../containers/bottomnavbar/BottomNavbar'
+import TopNavbar from '../../components/TopNavbar'
+import BottomNavbar from '../../components/BottomNavbar'
 import './CoreLayout.scss'
 import '../../styles/core.scss'
 
