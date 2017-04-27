@@ -8,7 +8,7 @@ import HomeRoute from './Home';
 export const createRoutes = (store) => ({
   path        : '/',
   component   : CoreLayout,
-  indexRoute  : { onEnter: (nextState, replace) => replace('/home') },
+  indexRoute  : { onEnter: (nextState, replace) => replace('/home/0') },
   childRoutes : [
     HomeRoute(store),
   ]

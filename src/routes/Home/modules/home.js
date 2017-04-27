@@ -1,3 +1,4 @@
+import catalogNodes from '../../../static/CatalogNodes.json'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -8,29 +9,42 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
 // Actions
 // ------------------------------------
 
-/*  This is a thunk, meaning it is a function that immediately
-    returns a function for lazy evaluation. It is incredibly useful for
-    creating async actions, especially when combined with redux-thunk! */
 
-export const fetchCatalogs = () => {
+export const fetchCatalogs = (id) => {
   return (dispatch, getState) => {
     //
-
-    //
-    const catalogs = [{id: 1}, { id: 2}]
-
+    var catalogs = [];
+    if( id === '0'){
+       catalogs = catalogNodes.filter((catalogNode)=>{
+        return (typeof catalogNode._p_parent==='undefined')
+      })
+    } else{
+      catalogs = catalogNodes.filter((catalogNode)=>{
+       return (typeof catalogNode._p_parent!=='undefined')&& (catalogNode._p_parent.includes(id))
+     })
+    }
+    // adding counter
+    var i = 0
+    for (var item of catalogs) {
+      const childs = catalogNodes.filter((catalogNode) => {
+        return (typeof catalogNode._p_parent!=='undefined')&& (catalogNode._p_parent.includes(item._id))
+      })
+      catalogs[i].count = childs.length
+      i++;
+    }
     dispatch({
       type    : FETCH_CATALOGS,
       payload : catalogs
     })
   }
 }
-export const fetchProducts = () => {
+export const fetchProducts = (id) => {
   return (dispatch, getState) => {
     //
-
+    const products = catalogNodes.filter((catalogNode)=>{
+      return typeof (catalogNode.isLeaf==true) && (typeof catalogNode._p_parent!=='undefined') && (catalogNode._p_parent.includes(id))
+    })
     //
-    const products = [{id: 15}, { id: 25}]
 
     dispatch({
       type    : FETCH_PRODUCTS,
