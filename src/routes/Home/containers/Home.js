@@ -20,9 +20,6 @@ export class Home extends Component {
   static contextTypes = {
     router: PropTypes.object
   }
-  state = {
-    leaf: 0
-  }
 
   componentDidMount() {
     this.props.fetchCatalogs(this.props.params.id);
@@ -32,15 +29,6 @@ export class Home extends Component {
     if (this.props.params.id !== nextPros.params.id) {
       this.props.fetchCatalogs(nextPros.params.id);
       this.props.fetchProducts(nextPros.params.id);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.catalogs !== nextProps.catalogs) {
-      console.log('home nextprops', nextProps);
-      this.setState({
-        leaf: 1
-      });
     }
   }
   productsCounter(catalogID){
