@@ -15,7 +15,7 @@ export const fetchCatalogs = (id) => {
   return (dispatch, getState) => {
     //
     let catalogs
-    let title
+    let title = ''
     let listType = false
     if( id === '0'){
        catalogs = catalogNodes.filter((catalogNode)=>{
@@ -30,10 +30,7 @@ export const fetchCatalogs = (id) => {
        return catalogNode._id === id
      })
      listType = currentCatalog[0].isLeaf
-     if (listType === false) {
-       title = currentCatalog[0].name
-     }
-     console.log('adfadsfadsfad', listType)
+     title = currentCatalog[0].name
     }
     // adding counter
     var i = 0

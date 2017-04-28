@@ -20,7 +20,7 @@ export class Home extends Component {
     params: PropTypes.object,
   }
   state = {
-    leaf: 0
+    title: 'COLLECTIONS'
   }
   componentDidMount() {
     this.props.fetchCatalogs(this.props.params.id);
@@ -28,7 +28,9 @@ export class Home extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id){
-      console.log("adfasdafsdfadsf", nextProps);
+      this.setState({
+          title: nextProps.title
+      })
       this.props.fetchCatalogs(nextProps.params.id);
       this.props.fetchProducts(nextProps.params.id);
     }
@@ -65,6 +67,11 @@ export class Home extends Component {
             className={this.props.listType? 'logo': 'hidden'}
             src={DuckImage}/>
           <ListGroup componentClass="ul" className="group">
+            <ListGroupItem className="banner-view">
+              <p>{this.state.title}</p>
+              <h4><strong>{this.props.title}</strong></h4>
+
+            </ListGroupItem>
             {
               this.props.products.map((product, index) =>
                 <ListGroupItem className="group-item" key={index}>
