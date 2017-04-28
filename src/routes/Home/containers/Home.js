@@ -4,6 +4,7 @@ import { ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 
 import { fetchCatalogs, fetchProducts } from '../modules/home'
+import TopNavbar from '../../../components/TopNavbar'
 
 import LogoImage from '../assets/logo.png'
 import DuckImage from '../assets/Duck.jpg'
@@ -14,53 +15,51 @@ export class Home extends Component {
     catalogs: PropTypes.array,
     fetchCatalogs: PropTypes.func,
     products: PropTypes.array,
+    title: PropTypes.string,
     fetchProducts: PropTypes.func,
     params: PropTypes.object,
   }
-  static contextTypes = {
-    router: PropTypes.object
+  state = {
+    leaf: 0
   }
-
   componentDidMount() {
     this.props.fetchCatalogs(this.props.params.id);
     this.props.fetchProducts(this.props.params.id);
   }
-  componentWillUpdate(nextPros) {
-    if (this.props.params.id !== nextPros.params.id) {
-      this.props.fetchCatalogs(nextPros.params.id);
-      this.props.fetchProducts(nextPros.params.id);
+  componentWillReceiveProps(nextProps) {
+    if (this.props.params.id !== nextProps.params.id){
+      this.props.fetchCatalogs(nextProps.params.id);
+      this.props.fetchProducts(nextProps.params.id);
+
     }
-  }
-  productsCounter(catalogID){
-    const currentProducts = this.props.catalogs.filter((catalogs)=>{
-      return (typeof catalogs._p_parent!=='undefined')&& (catalogs._p_parent.includes(catalogID))
-    })
-    return currentProducts.length
   }
   goToSubCollection(id) {
     browserHistory.push(`/home/${id}`)
-    this.props.fetchCatalogs(id)
+    // this.props.fetchCatalogs(id)
   }
 
   render() {
     return (
       <div>
-        <img
-          alt='This is a logo!'
-          className={this.props.params.id==0? 'logo': 'hidden'}
-          src={LogoImage}/>
-        <ListGroup componentClass="ul" className="group">
-          {
-            this.props.catalogs.map((catalog, index) =>
-              <ListGroupItem className="group-item" key={index} onClick={() => this.goToSubCollection(catalog._id)}>
-                <img className={catalog.isLeaf? 'pull-left order-image':'hidden'} src={DuckImage}/>
-                <span className="pull-right"><Glyphicon glyph="chevron-right"></Glyphicon></span>
-                <h4>{catalog.name}</h4>
-                <p className={catalog.isLeaf? 'hidden':''}>{catalog.count} Models</p>
-              </ListGroupItem>
-            )
-          }
-        </ListGroup>
+        <TopNavbar className = 'fixed-top' title={this.props.title} />
+        <div>
+          <img
+            alt='This is a logo!'
+            className={this.props.params.id==0? 'logo': 'hidden'}
+            src={LogoImage}/>
+          <ListGroup componentClass="ul" className="group">
+            {
+              this.props.catalogs.map((catalog, index) =>
+                <ListGroupItem className="group-item" key={index} onClick={() => this.goToSubCollection(catalog._id)}>
+                  <img className={catalog.isLeaf? 'pull-left order-image':'hidden'} src={DuckImage}/>
+                  <span className="pull-right"><Glyphicon glyph="chevron-right"></Glyphicon></span>
+                  <h4>{catalog.name}</h4>
+                  <p className={catalog.isLeaf? 'hidden':''}>{catalog.count} Models</p>
+                </ListGroupItem>
+              )
+            }
+          </ListGroup>
+        </div>
       </div>
     )
   }
@@ -68,7 +67,8 @@ export class Home extends Component {
 
 const mapStateToProps = (state) => ({
   catalogs: state.home.catalogs,
-  products: state.home.products
+  products: state.home.products,
+  title: state.home.title,
 })
 
 const mapDispatchToProps = {

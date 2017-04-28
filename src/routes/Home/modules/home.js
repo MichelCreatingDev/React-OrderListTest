@@ -1,4 +1,5 @@
 import catalogNodes from '../../../static/CatalogNodes.json'
+import translatedFields from '../../../static/translatedFields.json'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -13,7 +14,8 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
 export const fetchCatalogs = (id) => {
   return (dispatch, getState) => {
     //
-    var catalogs = [];
+    let catalogs
+    let title = 'COLLECTIONS'
     if( id === '0'){
        catalogs = catalogNodes.filter((catalogNode)=>{
         return (typeof catalogNode._p_parent==='undefined')
@@ -22,7 +24,12 @@ export const fetchCatalogs = (id) => {
       catalogs = catalogNodes.filter((catalogNode)=>{
        return (typeof catalogNode._p_parent!=='undefined')&& (catalogNode._p_parent.includes(id))
      })
+     const currentCatalog = catalogNodes.filter((catalogNode) => {
+       return catalogNode._id === id
+     })
+     title = currentCatalog[0].name;
     }
+
     // adding counter
     var i = 0
     for (var item of catalogs) {
@@ -34,15 +41,18 @@ export const fetchCatalogs = (id) => {
     }
     dispatch({
       type    : FETCH_CATALOGS,
-      payload : catalogs
+      payload : {
+        catalogs,
+        title
+      }
     })
   }
 }
 export const fetchProducts = (id) => {
   return (dispatch, getState) => {
     //
-    const products = catalogNodes.filter((catalogNode)=>{
-      return typeof (catalogNode.isLeaf==true) && (typeof catalogNode._p_parent!=='undefined') && (catalogNode._p_parent.includes(id))
+    const products = translatedFields.filter((translatedField)=>{
+      return translatedField.ownerId == id
     })
     //
 
@@ -63,7 +73,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_CATALOGS]    : (state, action) => ({ ...state, catalogs: action.payload }),
+  [FETCH_CATALOGS]    : (state, action) => ({ ...state, catalogs: action.payload.catalogs, title: action.payload.title }),
   [FETCH_PRODUCTS]    : (state, action) => ({ ...state, products: action.payload }),
 }
 
@@ -72,7 +82,8 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   catalogs: [],
-  products: []
+  products: [],
+  title: ''
 }
 export default function homeReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
