@@ -15,12 +15,13 @@ export const fetchCatalogs = (id) => {
   return (dispatch, getState) => {
     //
     let catalogs
-    let title = 'COLLECTIONS'
+    let title
     let listType = false
     if( id === '0'){
        catalogs = catalogNodes.filter((catalogNode)=>{
         return (typeof catalogNode._p_parent==='undefined')
       })
+      title = 'COLLECTIONS'
     } else{
       catalogs = catalogNodes.filter((catalogNode)=>{
        return (typeof catalogNode._p_parent!=='undefined')&& (catalogNode._p_parent.includes(id))
@@ -28,8 +29,10 @@ export const fetchCatalogs = (id) => {
      const currentCatalog = catalogNodes.filter((catalogNode) => {
        return catalogNode._id === id
      })
-     title = currentCatalog[0].name
      listType = currentCatalog[0].isLeaf
+     if (listType === false) {
+       title = currentCatalog[0].name
+     }
      console.log('adfadsfadsfad', listType)
     }
     // adding counter

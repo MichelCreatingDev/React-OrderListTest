@@ -41,7 +41,7 @@ export class Home extends Component {
     return (
       <div>
         <TopNavbar className = 'fixed-top' title={this.props.title} />
-        <div className = {!this.props.listType}>
+        <div className = {!this.props.listType?'':'hidden'}>
           <img
             alt='This is a logo!'
             className={this.props.params.id==0? 'logo': 'hidden'}
@@ -59,16 +59,16 @@ export class Home extends Component {
             }
           </ListGroup>
         </div>
-        <div className= { !this.props.listType }>
+        <div className= { this.props.listType? '': 'hidden' }>
           <img
             alt='This is a products image!'
-            className={this.props.params.id==0? 'logo': 'hidden'}
+            className={this.props.listType? 'logo': 'hidden'}
             src={DuckImage}/>
           <ListGroup componentClass="ul" className="group">
             {
               this.props.products.map((product, index) =>
                 <ListGroupItem className="group-item" key={index}>
-                  <h4>{product.name_en}</h4>
+                  <h4><strong>{product.name_en}</strong></h4>
                   <p>{product.value_en}</p>
                 </ListGroupItem>
               )
