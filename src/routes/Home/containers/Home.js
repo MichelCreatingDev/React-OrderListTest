@@ -28,21 +28,20 @@ export class Home extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id){
+      console.log("adfasdafsdfadsf", nextProps);
       this.props.fetchCatalogs(nextProps.params.id);
       this.props.fetchProducts(nextProps.params.id);
-
     }
   }
   goToSubCollection(id) {
     browserHistory.push(`/home/${id}`)
-    // this.props.fetchCatalogs(id)
   }
 
   render() {
     return (
       <div>
         <TopNavbar className = 'fixed-top' title={this.props.title} />
-        <div>
+        <div className = {!this.props.listType}>
           <img
             alt='This is a logo!'
             className={this.props.params.id==0? 'logo': 'hidden'}
@@ -60,6 +59,22 @@ export class Home extends Component {
             }
           </ListGroup>
         </div>
+        <div className= { !this.props.listType }>
+          <img
+            alt='This is a products image!'
+            className={this.props.params.id==0? 'logo': 'hidden'}
+            src={DuckImage}/>
+          <ListGroup componentClass="ul" className="group">
+            {
+              this.props.products.map((product, index) =>
+                <ListGroupItem className="group-item" key={index}>
+                  <h4>{product.name_en}</h4>
+                  <p>{product.value_en}</p>
+                </ListGroupItem>
+              )
+            }
+          </ListGroup>
+        </div>
       </div>
     )
   }
@@ -69,6 +84,7 @@ const mapStateToProps = (state) => ({
   catalogs: state.home.catalogs,
   products: state.home.products,
   title: state.home.title,
+  listType: state.home.listType
 })
 
 const mapDispatchToProps = {

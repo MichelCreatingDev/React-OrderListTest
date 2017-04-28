@@ -16,6 +16,7 @@ export const fetchCatalogs = (id) => {
     //
     let catalogs
     let title = 'COLLECTIONS'
+    let listType = false
     if( id === '0'){
        catalogs = catalogNodes.filter((catalogNode)=>{
         return (typeof catalogNode._p_parent==='undefined')
@@ -27,9 +28,10 @@ export const fetchCatalogs = (id) => {
      const currentCatalog = catalogNodes.filter((catalogNode) => {
        return catalogNode._id === id
      })
-     title = currentCatalog[0].name;
+     title = currentCatalog[0].name
+     listType = currentCatalog[0].isLeaf
+     console.log('adfadsfadsfad', listType)
     }
-
     // adding counter
     var i = 0
     for (var item of catalogs) {
@@ -43,7 +45,8 @@ export const fetchCatalogs = (id) => {
       type    : FETCH_CATALOGS,
       payload : {
         catalogs,
-        title
+        title,
+        listType,
       }
     })
   }
@@ -73,7 +76,7 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_CATALOGS]    : (state, action) => ({ ...state, catalogs: action.payload.catalogs, title: action.payload.title }),
+  [FETCH_CATALOGS]    : (state, action) => ({ ...state, catalogs: action.payload.catalogs, title: action.payload.title, listType: action.payload.listType }),
   [FETCH_PRODUCTS]    : (state, action) => ({ ...state, products: action.payload }),
 }
 
@@ -83,7 +86,8 @@ const ACTION_HANDLERS = {
 const initialState = {
   catalogs: [],
   products: [],
-  title: ''
+  title: '',
+  listType: ''
 }
 export default function homeReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
