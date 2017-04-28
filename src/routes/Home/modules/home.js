@@ -4,7 +4,7 @@ import translatedFields from '../../../static/translatedFields.json'
 // Constants
 // ------------------------------------
 export const FETCH_CATALOGS = 'FETCH_CATALOGS'
-export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
+export const FETCH_TRANSLATIONS = 'FETCH_TRANSLATIONS'
 
 // ------------------------------------
 // Actions
@@ -51,17 +51,17 @@ export const fetchCatalogs = (id) => {
     })
   }
 }
-export const fetchProducts = (id) => {
+export const fetchTranslations = (id) => {
   return (dispatch, getState) => {
     //
-    const products = translatedFields.filter((translatedField)=>{
+    const translations = translatedFields.filter((translatedField)=>{
       return translatedField.ownerId == id
     })
     //
 
     dispatch({
-      type    : FETCH_PRODUCTS,
-      payload : products
+      type    : FETCH_TRANSLATIONS,
+      payload : translations
     })
   }
 }
@@ -69,7 +69,7 @@ export const fetchProducts = (id) => {
 
 export const actions = {
   fetchCatalogs,
-  fetchProducts
+  fetchTranslations
 }
 
 // ------------------------------------
@@ -77,7 +77,7 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [FETCH_CATALOGS]    : (state, action) => ({ ...state, catalogs: action.payload.catalogs, title: action.payload.title, listType: action.payload.listType }),
-  [FETCH_PRODUCTS]    : (state, action) => ({ ...state, products: action.payload }),
+  [FETCH_TRANSLATIONS]    : (state, action) => ({ ...state, translations: action.payload }),
 }
 
 // ------------------------------------
@@ -85,7 +85,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   catalogs: [],
-  products: [],
+  translations: [],
   title: '',
   listType: ''
 }

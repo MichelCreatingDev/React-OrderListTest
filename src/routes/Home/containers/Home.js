@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { ListGroup, ListGroupItem, Glyphicon } from 'react-bootstrap'
 import { browserHistory } from 'react-router';
 
-import { fetchCatalogs, fetchProducts } from '../modules/home'
+import { fetchCatalogs, fetchTranslations } from '../modules/home'
 import TopNavbar from '../../../components/TopNavbar'
 
 import LogoImage from '../assets/logo.png'
@@ -14,9 +14,9 @@ export class Home extends Component {
   static propTypes = {
     catalogs: PropTypes.array,
     fetchCatalogs: PropTypes.func,
-    products: PropTypes.array,
+    translations: PropTypes.array,
     title: PropTypes.string,
-    fetchProducts: PropTypes.func,
+    fetchTranslations: PropTypes.func,
     params: PropTypes.object,
   }
   state = {
@@ -24,7 +24,7 @@ export class Home extends Component {
   }
   componentDidMount() {
     this.props.fetchCatalogs(this.props.params.id);
-    this.props.fetchProducts(this.props.params.id);
+    this.props.fetchTranslations(this.props.params.id);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.params.id !== nextProps.params.id){
@@ -32,7 +32,7 @@ export class Home extends Component {
           title: nextProps.title
       })
       this.props.fetchCatalogs(nextProps.params.id);
-      this.props.fetchProducts(nextProps.params.id);
+      this.props.fetchTranslations(nextProps.params.id);
     }
   }
   goToSubCollection(id) {
@@ -73,10 +73,10 @@ export class Home extends Component {
 
             </ListGroupItem>
             {
-              this.props.products.map((product, index) =>
+              this.props.translations.map((translation, index) =>
                 <ListGroupItem className="group-item" key={index}>
-                  <h4><strong>{product.name_en}</strong></h4>
-                  <p>{product.value_en}</p>
+                  <h4><strong>{translation.name_en}</strong></h4>
+                  <p>{translation.value_en}</p>
                 </ListGroupItem>
               )
             }
@@ -89,14 +89,14 @@ export class Home extends Component {
 
 const mapStateToProps = (state) => ({
   catalogs: state.home.catalogs,
-  products: state.home.products,
+  translations: state.home.translations,
   title: state.home.title,
   listType: state.home.listType
 })
 
 const mapDispatchToProps = {
   fetchCatalogs : (id) => fetchCatalogs(id),
-  fetchProducts : (id) => fetchProducts(id),
+  fetchTranslations : (id) => fetchTranslations(id),
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
